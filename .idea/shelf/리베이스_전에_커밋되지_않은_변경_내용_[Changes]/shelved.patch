@@ -1,0 +1,37 @@
+Index: Learning.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import numpy as np\nimport tensorflow as tf\nfrom tensorflow.keras import datasets, layers, models\n\nclass ML:\n\n    # cv2.imwrite('./savedImages/channel_%d(%d, %d, %d).png' % (i, int(header[0]), int(header[1]), int(header[2])), img)\n    def __init__(self,train_images, train_labels, width, height):\n        self.train_images = np.reshape(train_images, (len(train_images), width, height, 1))\n        self.train_labels = train_labels\n        self.width = width\n        self.height = height\n\n    def create(self):\n        self.model = tf.keras.models.Sequential([\n            tf.keras.layers.Conv2D(32, (3,3), activation='relu', input_shape=(self.width, self.height, 1)),\n            tf.keras.layers.MaxPooling2D((2,2)),\n            tf.keras.layers.Conv2D(64, (3,3), activation='relu'),\n            tf.keras.layers.MaxPooling2D((2, 2)),\n            tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),\n\n            tf.keras.layers.Flatten(),\n            tf.keras.layers.Dense(64, activation='relu'),\n            tf.keras.layers.Dense(4, activation='softmax')\n        ])\n        self.model.summary()\n\n    def train(self):\n        self.model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])\n        self.model.fit(self.train_images, self.train_labels, epochs=30)\n\n    def test(self, input):\n        # 모델을 불러와서 input이미지로\n\n        return\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Learning.py b/Learning.py
+--- a/Learning.py	(revision 55fc9f3d418500b33d817abaecf7ebdb667287d1)
++++ b/Learning.py	(date 1685434470914)
+@@ -6,6 +6,7 @@
+ 
+     # cv2.imwrite('./savedImages/channel_%d(%d, %d, %d).png' % (i, int(header[0]), int(header[1]), int(header[2])), img)
+     def __init__(self,train_images, train_labels, width, height):
++        #np.reshape(이미지 배열, (배열 길이, 이미지 넓이 크기, 이미지 높이 크기, 차원) )
+         self.train_images = np.reshape(train_images, (len(train_images), width, height, 1))
+         self.train_labels = train_labels
+         self.width = width
+@@ -21,7 +22,11 @@
+ 
+             tf.keras.layers.Flatten(),
+             tf.keras.layers.Dense(64, activation='relu'),
+-            tf.keras.layers.Dense(4, activation='softmax')
++            #Dense(분별할 종류 개수, activation='aaa')
++            tf.keras.layers.Dense(4, activation='softmax'),
++
++            # tf.keras.layers.Dropout(0.2),
++            # tf.keras.layers.Dense(4, activation='softmax')
+         ])
+         self.model.summary()
+ 
+@@ -31,5 +36,4 @@
+ 
+     def test(self, input):
+         # 모델을 불러와서 input이미지로
+-
+         return
